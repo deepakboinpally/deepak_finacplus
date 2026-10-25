@@ -1,0 +1,9 @@
+{
+    "demoqa": {
+        "baseURL": "https://demoqa.com"
+    },
+    "reqres": {
+        "baseURL": "https://reqres.in",
+        "projectId": "56163"
+    }
+}
