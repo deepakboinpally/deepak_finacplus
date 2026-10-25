@@ -34,7 +34,7 @@ export class BookStore {
     }
     async validateBookSearch(book) {
         const bookRow = this.page.getByRole('row').filter({ hasText: book.title });
-        await expect(bookRow).toBeVisible();
+        await expect(bookRow, `Expected book "${book.title}" to appear in search results`).toBeVisible();
 
         const cells = bookRow.getByRole('cell');
         const bookDetails = {
@@ -43,9 +43,9 @@ export class BookStore {
             Publisher: await cells.nth(3).innerText(),
         };
 
-        expect(bookDetails.title).toBe(book.title);
-        expect(bookDetails.Author).toBe(book.Author);
-        expect(bookDetails.Publisher).toBe(book.Publisher);
+        expect(bookDetails.title, `Expected the book title to match "${book.title}"`).toBe(book.title);
+        expect(bookDetails.Author, `Expected the author for "${book.title}" to match`).toBe(book.Author);
+        expect(bookDetails.Publisher, `Expected the publisher for "${book.title}" to match`).toBe(book.Publisher);
 
         return bookDetails;
     }
@@ -54,7 +54,10 @@ export class BookStore {
         await this.password.fill(credentials.password);
     }
     async validateLogin() {
-        await expect(this.page.getByText(credentials.username)).toBeVisible();
-        await expect(this.logoutButton).toBeVisible();
+        await expect(
+            this.page.getByText(credentials.username),
+            'Expected the logged-in username to be visible',
+        ).toBeVisible();
+        await expect(this.logoutButton, 'Expected the logout button to be visible after login').toBeVisible();
     }
 }
