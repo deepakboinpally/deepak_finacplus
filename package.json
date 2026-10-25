@@ -1,0 +1,28 @@
+{
+  "name": "deepak_finacplus",
+  "version": "1.0.0",
+  "description": "Automating UI &amp; API using Playwright with javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test tests/ui",
+    "test:api": "playwright test tests/api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepakboinpally/deepak_finacplus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/deepakboinpally/deepak_finacplus/issues"
+  },
+  "homepage": "https://github.com/deepakboinpally/deepak_finacplus#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "dotenv": "^18.0.9"
+  }
+}
