@@ -37,8 +37,8 @@ test.describe('ReqRes user lifecycle', () => {
       const responseBody = await logResponseBody(response);
 
       expect(response.status(), 'Create user failed').toBe(201);
-      expect(responseBody.data.data).toMatchObject(CREATE_USER);
-      expect(responseBody.data.id).toBeTruthy();
+      expect(responseBody.data.data, 'Created user details did not match the request').toMatchObject(CREATE_USER);
+      expect(responseBody.data.id, 'Create response did not include a user ID').toBeTruthy();
 
       userId = responseBody.data.id;
       createdUserId = userId;
@@ -49,7 +49,7 @@ test.describe('ReqRes user lifecycle', () => {
       const responseBody = await logResponseBody(response);
 
       expect(response.status(), 'Fetch created user failed').toBe(200);
-      expect(responseBody.data).toMatchObject({
+      expect(responseBody.data, 'Fetched user details did not match the created user').toMatchObject({
         id: userId,
         data: CREATE_USER,
       });
@@ -60,7 +60,7 @@ test.describe('ReqRes user lifecycle', () => {
       const responseBody = await logResponseBody(response);
 
       expect(response.status(), 'Update user failed').toBe(200);
-      expect(responseBody.data).toMatchObject({
+      expect(responseBody.data, 'Updated user response did not match the requested details').toMatchObject({
         id: userId,
         data: UPDATED_USER_DATA,
       });
@@ -71,17 +71,17 @@ test.describe('ReqRes user lifecycle', () => {
       const responseBody = await logResponseBody(response);
 
       expect(response.status(), 'Fetch updated user failed').toBe(200);
-      expect(responseBody.data.id).toBe(userId);
-      expect(responseBody.data.data).toMatchObject(UPDATED_USER_DATA);
+      expect(responseBody.data.id, 'Fetched user ID did not match the updated user').toBe(userId);
+      expect(responseBody.data.data, 'Fetched user details did not match the update').toMatchObject(UPDATED_USER_DATA);
     });
 
     await test.step('Delete the created user as cleanup', async () => {
       const response = await reqres.deleteUser(userId);
       const responseBody = await logResponseBody(response);
 
-      expect([200, 204], 'Delete user failed').toContain(response.status());
+      expect([200, 204], 'Expected user deletion to return 200 or 204').toContain(response.status());
       if (responseBody?.data?.id) {
-        expect(responseBody.data.id).toBe(userId);
+        expect(responseBody.data.id, 'Delete response returned an unexpected user ID').toBe(userId);
       }
       createdUserId = null;
     });
@@ -90,7 +90,7 @@ test.describe('ReqRes user lifecycle', () => {
       const response = await reqres.getUser(userId);
       await logResponseBody(response);
 
-      expect(response.status(), 'Deleted user was still available').toBe(404);
+      expect(response.status(), 'Expected fetching a deleted user to return 404').toBe(404);
     });
   });
 });
